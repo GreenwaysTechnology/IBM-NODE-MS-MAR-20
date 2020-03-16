@@ -1,0 +1,1272 @@
+Topics
+
+1.ES 6 Features
+
+2.Node js
+
+3.Molecular-MS Framework on node js
+
+
+ES 6 Features 
+
+let,const
+
+arrow functions
+
+classes and objects
+
+Async Programming and implementation
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+
+Project setup:
+
+
+
+1.node js
+
+2.VS CODE
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+ES6  :
+
+ECMA Script 6(version)
+.......................
+
+What is java script?
+
+ JS PL.
+
+JS is Object based,Functional style,Event Driven Pl.
+
+js = oo+ functional+ event driven
+
+After java 8, java is called as object orientd,functional style
+pl.
+
+object based vs object oriented :
+
+The language which does not support all oo features those languages
+called object based.
+
+OO Features:
+...........
+oop
+ ->Abstraction
+      classes
+ ->Encaspulation
+       private,public
+ ->Modularity
+     
+ ->Hierachy
+    has-a, is-a
+ ->Typing :strong typing
+     -polymorphism
+--------------------
+ ->Concurrency
+         Multi threading
+ ->Persistency
+        orm,storage
+
+
+
+Functional Programming concepts:
+
+ Functional programming concepts dervied from a mathmetical model called
+lambda caculs
+
+Features:
+
+1.functions are abstraction for computing
+2.pure functions 
+3.functions are high order
+4.Supports only recurssion, no loops
+
+Pure functional programmng vs functional style programming:
+
+The language does not support all functional programming features those language called
+as "functional style"
+
+
+Event driven pl also anther programming concepts.
+
+
+Why js was created?
+
+
+JS was created for web computing.
+
+JS Was created for manipulating html docs.
+
+JS WAS Created by Bredan Eich,at netscap 1995.
+
+
+History of language
+
+1. 1996- Mocha the first name given to javascript
+
+2.1996 - Live script second name
+
+3.1996 - Javascript third name
+
+Language had been submmited to commit "ECMA" -European Computer Manufacturers Association (ECMA)
+
+1996---1997 :  js 1.0----> ES 1.0
+
+1998 -- ES 2.0 Was not relased
+
+1999 -  ES 3.0
+
+2007 - ES 4.0
+2008 - ES 5.0
+2012 - ES 6 Spec released
+2015 - ES 6 Final draft
+
+2016 - ES 7
+
+2018  - ES 8
+.....................
+javascript language topics:
+
+1.fundamental
+2.functions - functional programming concepts
+3.objects- object based programming
+4.ajax - networking
+5.ui programming : dom
+
+
+ES 6 Features :
+
+1.fundamental
+varaibles,values...
+  let,const, string literals
+
+ - variable declarations
+  - var - es 5 
+    - let and const -new keywords in es 6
+
+Note: JS is type free/dynamic typed/weak typed pl.
+
+ js does not require data type during declartion
+
+var | let | const variableName = Value(literals)
+
+literals types:
+
+1.string
+2.number
+3.boolean
+4.undefined
+5.NaN
+6.infnity
+7.null
+8.function
+9.object
+
+
+1.string :
+
+"",'',``(backtick-e6)
+
+//literals,let,const,var
+
+//es 5 declaration
+var firstName = "Subramanian";
+
+console.log("First Name : " + firstName);
+//var to let keyword : var vs let : will dicuss
+
+let lastName = 'Murugan';
+
+//string concation : + , es 6 backtick with template literal
+console.log("Last Name :" + lastName)
+console.log('Last Name', lastName);
+//es 6 concept : backtick with template literal : `${variable}`
+console.log(`Last Name ${lastName}`)
+
+//back tick uses:
+//multi line string literal
+let title = "IBM Digital";
+
+let htmlDoc = "<html>" +
+    "<head>" +
+    "<title>" + title +
+    "</title>"
+"</head>" +
+    "<body>" +
+    "</body>" +
+    "</html>";
+console.log(htmlDoc);
+//multi line with back tic notation
+
+let body = 'Hello im new to es 6'
+let newHtmlDoc = `
+<html>
+ <head>
+     <title>${title}</title>
+ </head>
+ <body>
+      <h1>${body}</h1>
+  </body>
+ </html>
+`;
+console.log(newHtmlDoc);
+
+
+Numbers:
+//numbers : 64 bit double.
+
+
+NaN :
+not a number , which is number which holds numerical computation
+error results.
+Nan if you get, your code is buggy code : runtime 
+
+if you get nan you must fix it.
+
+When you will get NaN?
+
+use case 1; when you do compuation against undefined.
+
+let qty;
+let price = 1000;
+let totalPrice = qty * price;
+
+use case 2 ; type conversion ; string to number conversion
+
+
+type conversion:
+
+1.implicit 
+  js automatically convert string to no.
+  "10" *10 ===> 10 * 10
+ conversion first and computation
+
+2.explicit
+ parseInt,parseFloat =>
+ parseInt("10") * 10 => 10 * 10
+
+
+//Numbers :
+
+let salary = 1000;
+console.log(`Salary ${salary}`);
+
+//numerical computation
+
+let totalSalary = salary *10;
+console.log(`totalSalary ${totalSalary}`);
+
+//variable has been declared but no value : undefined
+let qty;
+console.log(`The Qty ${qty}`)
+
+//computation against.
+
+let price = 1000;
+
+let totalPrice = qty * price;
+
+console.log(`The Total Price ${totalPrice}`)
+
+
+//type conversion
+
+let x ="10"; //string type but value is number.
+//type con
+let totalX =  x * 10; //impicit
+let totalX1=  parseInt(x) * 10; //explict
+console.log(`Total X : ${totalX} ${totalX1}`)
+
+//type convrsion and nan
+let y ="$90" // $90 to number =>type conversion failed
+let totalY = y * 10;
+console.log(`Total Y : ${totalY}`)
+
+// div by 0
+
+let avg=1000/0; //Infinity
+console.log(`Avg ${avg}`);
+///////////////////////////////////////////////////////////////////////////////////////
+
+booleans:
+true/false
+decision making : if...else, if..else if...else
+
+/**
+ * Truthy values:
+ *  In javascript everything is true execpt the following values
+ * 
+ * fasly values
+ *  1.boolean false
+ *  2.Empty string "" ,''
+ *  3.0
+ *  4.undefined
+ *  5.NaN
+ *  6.null
+
+//booleans
+let isActive = true;
+console.log(`Is Active ${isActive}`);
+
+//decision
+if(isActive){
+    console.log(`It is active`)
+}else{
+    console.log(`It is not active`)
+}
+//an operator tenary operator
+isActive ? console.log(`It is active`) :   console.log(`It is not active`)
+
+//
+let name = 'Subramanian';
+if(name){
+    console.log(`It is name`)
+}else{
+    console.log(`It is not name`)
+}
+let age;
+if(age){
+    console.log(`It is age`)
+}else{
+    console.log(`It is not age`)
+}
+age ? console.log(`It is age`) :   console.log(`It is not age`)
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+Opeartors:
+.........
+
+ == , === !=,!==,!,!!
+
+ == : compares based content only, it does not take care about type system.
+
+if you compare only value, then it is not right comparsion.
+
+== consider buggy operator.
+
+=== : compares both value + type : this is right comparsion:
+
+Best practice : dont use == for comparsion.
+
+!= : dont use
+!== : use
+
+//operators
+
+//==
+let x = 10;
+let y = 10;
+if (x == y) {
+    console.log('X and Y are equal')
+} else {
+    console.log('X AND Y not equal')
+}
+
+let a = "10"; //string
+let b = 10; //number
+if (a === b) { // string == number
+    console.log('A and B are equal')
+} else {
+    console.log('A AND B not equal')
+}
+
+//invertor : true --false; false--true !
+
+
+let token = '1234'; //true
+let isTokenAvailable = !token; //!true =>false
+let isNewTokenAvailable = !!token; // !!false =>false !!true=>true
+console.log(`isTokenAvailable ${isTokenAvailable}`)
+console.log(`isTokenAvailable ${isNewTokenAvailable}`)
+
+// || operator
+
+let isActive = true;
+let isEnabled = false;
+
+if (isActive || isEnabled) {
+    console.log('pass')
+} else {
+    console.log('fail')
+}
+
+
+let low = 0 ;
+let high = 106;
+
+//if first operand(low) is truthy,the result would be first operand, 
+//else second operand
+let result = low || high;
+console.log(result)
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+const keyword :
+
+//let vs const
+
+//var and let can be re initalized
+let x = 10
+console.log(`X ${x}`);
+x = "Hello";
+console.log(`X ${x}`);
+x = 900;
+console.log(`X ${x}`);
+
+const pi = 3.14;
+console.log(`PI ${pi}`);
+pi = 90.89;
+console.log(`PI ${pi}`);
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+Functional Programming in js : functions,arrow functions, async programming.
+
+
+What is function?
+ function is build block of js.
+
+function holds logic of application
+
+//functions
+
+//declaring function.
+
+function sayHello() {
+    console.log('Hello')
+}
+//function invocation
+sayHello();
+
+//parameters and args
+
+//a and b are args
+function add(a, b) {
+    let result = a + b;
+    console.log(`add result is ${result}`);
+}
+//10 ,10 are parameters
+add(10, 10);
+
+//default args : es 6 feature
+function multiply(a = 1, b = 1) {
+    let result = a * b;
+    console.log(`multiply result is ${result}`);
+}
+multiply(19, 10)
+multiply();//
+
+//var args
+// function logger() {
+//     //es 5 syntax
+//     console.log(arguments)
+// }
+
+//es 6 syntax : rest operator
+function logger(...args) {
+    console.log(args);
+}
+logger('Hi', 'hello', 'welcome');
+logger('Hi');
+logger('Hi', 'hello');
+
+//how to return value
+function getStockValue(){
+    return 100
+}
+console.log(getStockValue());
+
+function getStatus(){
+    return; //undefined
+}
+getStatus() ? console.log('Yes') : console.log('No');
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+function literals:
+
+In js , functions are literals(values).
+
+Since it is literal, we can assign to variables like numbers and strings
+
+ for eg;
+ let a =10;
+ 10 number , we assign to a, a is variable
+
+we can assign function to a variable : function declaration.
+
+"Since function is literal , we can assign to variable, we can pass as parameter,return
+from other function".
+
+  if you do so, that variable holds the function reference, so we can call it later.
+
+
+what you can pass as parameter(value) to the function?
+
+you can pass any literal as parameter including function.
+
+
+
+//function as literal.
+
+//way 1 :
+function sayHello() {
+    console.log('Hello');
+}
+let hello = sayHello;//just assign function to a variable
+console.log(hello);
+//invoke that function
+hello();
+//way 2:
+
+//anonmous function: function without name;
+let hai = function () {
+    console.log('Hai')
+};
+//call hai
+hai();
+//parameters,args and return ; function literals
+
+//a =x;
+//b=y;
+let add = function (a = 1, b = 1) {
+    return a + b;
+};
+console.log(add(10, 10));
+let x = 10
+let y = 90;
+console.log(add(x, y));
+
+//passing function as parameter to another function
+
+//connect is variable  //connect=function(){} 
+let handler = function (info,connect) {
+   let message= connect(info);
+   console.log(message);
+};
+handler('DB Handler',function (message) {
+   // console.log(`${message}`)
+   return `${message}`;
+});
+
+//declare variable
+let httpConnector = function (message) {
+    // console.log(`${message}`)
+    return `${message}`;
+ };
+handler('HTTP handler',httpConnector);
+////////////////////////////////////////////////////////////
+
+function getValue() {
+    return 100;
+}
+console.log(getValue());
+
+//way 1
+// function counter(){
+
+//     function increment(){
+//         console.log('Increment')
+//     }
+//     return increment;
+// }
+
+//way 2
+// function counter() {
+//     return function increment() {
+//         console.log('Increment')
+//     }
+// }
+
+//way 3:
+function counter() {
+    return function (info) {
+        console.log(info)
+    }
+}
+let inc = counter()
+console.log(inc)
+inc('increment');
+counter()('increment');
+/////////////////////////////////////////////////////////////////////////////////////////
+ES 6 ARROW FUNCTIONS:
+....................
+
+ES 6 ARROW functions are replacment of function declaration syntax.
+
+
+
+
+//function declaration : es 5
+// let hai = function () {
+//     console.log('Hai')
+// };
+// hai();
+
+//function declaration in es 6 : arrow function
+
+let hai = () => {
+    console.log('Hai')
+};
+hai();
+
+//if function has only one line of body: drop {}
+hai = () => console.log('Hai');
+hai();
+
+//args ,parameters : multi parameter with default value
+
+hai = (name = 'foo', message = 'Hello') => console.log(`${name} ${message}`);
+hai();
+hai('ram', 'hai');
+
+//single arg,parameter , without default value : drop ()
+hai = message => console.log(`${message}`);
+hai('Hello');
+///////////////////////////////////////////////////////////////////////////////
+
+//return simple values
+let stockValue = () => {
+    return 100;
+};
+console.log(stockValue());
+//only return statmement , no more body. : drop {} and return statement
+stockValue = () => 100;
+console.log(stockValue());
+//multi paratmeter and single return with default args
+stockValue = (qty = 1, value = 1) => qty * value;
+console.log(stockValue(12, 89));
+//single arg , no default value, return the same
+stockValue = value => value;
+console.log(stockValue(90));
+////////////////////////////////////////////////////////////////////////////////
+
+//function as parameter in arrow
+
+let handler = connect => {
+    connect();
+}
+handler(() => console.log('Connector'));
+
+handler = connect => connect();
+handler(() => console.log('Connector'));
+
+handler = connect => connect();
+let httpConnector = () => console.log('HTTP Connector');
+handler(httpConnector);
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+Object based Programming:
+........................
+
+How to create object?
+You need class. js does not support classes but es 6 brought class syntax.
+
+1.Constructors
+  1.1.using traditional function
+  1.2.using es 6 classes
+2.Literals
+
+
+function roles in js:
+
+1. to act as logic holder 
+
+2. to act as a class to create objects
+
+when y invoke function , you have to use new keyword : constructor call ; object creation.
+
+
+coding standards for function declaration:
+
+normal functions
+
+1.function name is verb or verb+noun ; add, calculateSalary
+
+
+classes : for declartion classes
+
+1.function name Noun ; Employee
+
+
+Object : state(instance variables) + behaviour(instance methods)
+
+instance memebers are declared using "this" keyword.
+
+//object creation
+
+//es 5 way : constructors
+//using function ; es5
+
+function Employee() {
+
+    //instance variables
+    this.id = 1;
+    this.name = 'subramanian';
+    //instance methods
+    this.calculateSalary = function () {
+        return 1000;
+    };
+
+}
+//emp is referenc variable
+let emp = new Employee();
+//access object properties
+console.log(`id ${emp.id} ${emp.name} ${emp.calculateSalary()}`);
+
+//es 6 class 
+
+class Customer {
+    //instance variables
+    id = 11;
+    name = 'ram';
+    //instance methods
+    calculateInvoice() {
+        return 1000;
+    };
+}
+//cust is referenc variable
+let cust = new Customer();
+//access object properties
+console.log(`id ${cust.id} ${cust.name} ${cust.calculateInvoice()}`);
+/////////////////////////////////////////////////////////////////////////////////////////
+
+
+State initalization: data
+
+1.hardcoded directly inside class
+
+
+function Employee() {
+
+    //instance variables
+    this.id = 1;
+    this.name = 'subramanian';
+    //instance methods
+    this.calculateSalary = function () {
+        return 1000;
+    };
+
+}
+
+class Customer {
+    //instance variables
+    id = 11;
+    name = 'ram';
+    //instance methods
+    calculateInvoice() {
+        return 1000;
+    };
+}
+
+2.after object creation 
+//object creation
+
+//es 5 way : constructors
+//using function ; es5
+
+function Employee() {
+
+    //instance variables
+    this.id = 1;
+    this.name = 'subramanian';
+    //instance methods
+    this.calculateSalary = function () {
+        return 1000;
+    };
+
+}
+//emp is referenc variable
+let emp = null;
+
+emp = new Employee();
+//access object properties
+console.log(`id ${emp.id} ${emp.name} ${emp.calculateSalary()}`);
+
+//new object 
+emp = new Employee();
+//state initalization after object creation
+emp.id = 90000;
+emp.name = 'raj';
+console.log(`id ${emp.id} ${emp.name} ${emp.calculateSalary()}`);
+
+
+
+//es 6 class 
+
+class Customer {
+    //instance variables
+    id = 11;
+    name = 'ram';
+    //instance methods
+    calculateInvoice() {
+        return 1000;
+    };
+}
+//cust is referenc variable
+let cust = null;
+
+cust = new Customer();
+//access object properties
+console.log(`id ${cust.id} ${cust.name} ${cust.calculateInvoice()}`);
+
+//after object creation
+cust.id =9999;
+cust.name ='ram'
+console.log(`id ${cust.id} ${cust.name} ${cust.calculateInvoice()}`);
+
+
+
+3.through constructors parameters
+//object creation
+
+//es 5 way : constructors
+//using function ; es5
+
+function Employee(id = 1, name = 'subramanian') {
+
+    //instance variables
+    this.id = id;//1;
+    this.name = name; 'subramanian';
+    //instance methods
+    this.calculateSalary = function () {
+        return 1000;
+    };
+
+}
+//emp is referenc variable
+let emp = null;
+
+emp = new Employee();
+//access object properties
+console.log(`id ${emp.id} ${emp.name} ${emp.calculateSalary()}`);
+
+//new object 
+emp = new Employee();
+//state initalization after object creation
+emp.id = 90000;
+emp.name = 'raj';
+console.log(`id ${emp.id} ${emp.name} ${emp.calculateSalary()}`);
+
+emp = new Employee(4444, 'James'); //constructor parameters
+//access object properties
+console.log(`id ${emp.id} ${emp.name} ${emp.calculateSalary()}`);
+
+
+
+
+//es 6 class 
+
+class Customer {
+
+    constructor(id = 1, name = 'subramanian') {
+        //instance variables
+        this.id = id;
+        this.name = name;
+    }
+
+    //instance methods
+    calculateInvoice() {
+        return 1000;
+    };
+}
+//cust is referenc variable
+let cust = null;
+
+cust = new Customer();
+//access object properties
+console.log(`id ${cust.id} ${cust.name} ${cust.calculateInvoice()}`);
+
+//after object creation
+cust.id = 9999;
+cust.name = 'ram'
+console.log(`id ${cust.id} ${cust.name} ${cust.calculateInvoice()}`);
+
+cust = new Customer(4555,'James');//constructor parameters
+//access object properties
+console.log(`id ${cust.id} ${cust.name} ${cust.calculateInvoice()}`);
+
+
+///////////////////////////////////////////////////////////////////////////////////
+
+Hierachy: Object relation ship:
+
+HAS-A, IS-A
+
+HAS-A : Dependency injection
+
+
+
+class Product {
+    constructor(id = 1, qty = 1, price = 1.8, name = 'foo') {
+        this.id = id;
+        this.qty = qty;
+        this.price = price;
+        this.name = name;
+    }
+}
+class Order {
+    constructor(orderid = 'A001', product = new Product()) {
+        this.orderid = orderid;
+        //has-a 
+        this.product = product; //has-a
+    }
+}
+let product = new Product();
+let order = null;
+
+order = new Order('A003', product);
+console.log(order);
+
+order = new Order('A004', new Product(7, 100, 890, 'Bar'))
+console.log(order);
+
+IS -A relation ship :inheritance:
+.................................
+
+
+//is-a 
+
+class Account {
+    constructor(id) {
+        this.id = id;
+        console.log('acc')
+    }
+    //methods
+    deposit(){
+        return 'Account Deposit'
+    }
+}
+class SavingsAccount extends Account {
+    constructor(id = 1) {
+        super(id);
+        console.log('savings account')
+    }
+    deposit(){
+        return 'SavingsAccount Deposit' + super.deposit();
+    }
+}
+let sb = new SavingsAccount(12);
+console.log(`Account id ${sb.id} ${sb.deposit()}`)
+
+////////////////////////////////////////////////////////////////////////////////
+
+Literal objects : 
+
+
+//literals objects 
+
+let profile = {
+    id: 1,
+    name: 'ram'
+};
+console.log(`${profile.id} ${profile.name}`)
+//literals with methods
+
+let component = {
+    name: 'ProfileService',
+    version: '1.9',
+    update: function () {
+        return 'update function'
+    },
+    save() {
+        return 'save function'
+    }
+
+}
+console.log(`${component.name} ${component.version} ${component.update()} ${component.save()}`)
+//state manipulation
+component.name = 'CustomerService'
+console.log(`${component.name} ${component.version} ${component.update()} ${component.save()}`)
+
+//has - a 
+let emp = {
+    id: 2,
+    name: 'x',
+    //has-a : nested objects
+    address: {
+        city: 'coimbatore',
+        state: 'TN'
+    }
+}
+console.log(emp.id,emp.address.city)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+Object destrucing: es 6
+
+//object destrucing
+
+// function printEmployees(emp){
+//     //print employee
+//  console.log(`Id ${emp.id}`)
+//  console.log(`Name ${emp.name}`)
+//  console.log(`city ${emp.address.city}`)
+//  console.log(`state ${emp.address.state}`)
+// }
+
+//way :1
+// function printEmployees(emp) {
+//     ///object destrucing
+//     const { id, name, address } = emp;
+//     //print employee
+//     console.log(`Id ${id}`)
+//     console.log(`Name ${name}`)
+//     console.log(`city ${address.city}`)
+//     console.log(`state ${address.state}`)
+// }
+//way : 2
+// function printEmployees({ id, name, address }) {
+//     console.log(`Id ${id}`)
+//     console.log(`Name ${name}`)
+//     console.log(`city ${address.city}`)
+//     console.log(`state ${address.state}`)
+// }
+//way - 3
+// const printEmployees = ({ id, name, address }) => {
+//     console.log(`Id ${id}`)
+//     console.log(`Name ${name}`)
+//     console.log(`city ${address.city}`)
+//     console.log(`state ${address.state}`)
+// };
+//nested object destrucing
+const printEmployees = ({ id, name, address: { city, state } }) => {
+    console.log(`Id ${id}`)
+    console.log(`Name ${name}`)
+    console.log(`city ${city}`)
+    console.log(`state ${state}`)
+};
+let emp = {
+    id: 2,
+    name: 'x',
+    //has-a : nested objects
+    address: {
+        city: 'coimbatore',
+        state: 'TN'
+    }
+}
+printEmployees(emp);
+
+printEmployees({
+    id: 2,
+    name: 'x',
+    //has-a : nested objects
+    address: {
+        city: 'coimbatore',
+        state: 'TN'
+    }
+});
+/////////////////////////////////////////////////////////////////////////////////////
+
+Object desturing with return statment:
+
+arrow with objects.
+
+
+
+
+// function getEmployee(id,name) {
+//     return {
+//         id: id,
+//         name: name
+//     }
+// }
+
+// function getEmployee(id,name) {
+//     //left : right key : value == make it one
+//     return {
+//         id,
+//         name
+//     }
+// }
+// const getEmployee = (id, name) => {
+//     //left : right key : value == make it one
+//     return {
+//         id,
+//         name
+//     }
+// };
+//remove return and {}
+const getEmployee = (id, name) => ({
+    id,
+    name
+});
+
+let emp = getEmployee(1, 'James')
+console.log(`Id ${emp.id}`)
+console.log(`Name ${emp.name}`)
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+Object augmentation:
+
+Dyanamic programming : during runtime , we can alter code.
+
+In java like languages objects cant be altered during runtime.
+ like adding new property,deleting ...
+
+IN JS you can add,delete,update,iterate object properties : object augmentation.
+
+//object augmentation
+
+function Employee(){
+    this.id=1;
+}
+let emp = new Employee();
+
+//add new property after object creation : outside
+emp.name ='subramanian'
+console.log(emp)
+
+//empty object
+let cust = {};
+cust.name ='ram';
+cust.city = 'coimbatore'
+
+//update 
+cust.name = 'raja'
+
+delete cust.name;
+
+console.log(cust);
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+Javascript built in objects:
+
+1.Object : It is one the parent class/object in javascript inheritance.
+
+Object class has lot of uitlity methods
+
+2.Wrapper objects
+  Number,String,Boolean
+
+3.Array : data structure
+
+4.JSON : PARSER object
+
+5.Math
+
+etc.....................
+//built in object
+
+//string
+let name = "subramanian".toUpperCase();
+console.log(name);
+
+//numbers
+let price = 1000.778434;
+console.log(price, price.toFixed(2));
+
+//array
+let names = ['a', 'b', 'c'];
+names.forEach(name => console.log(name));
+let employees = [{ id: 1, name: 'A1' }, { id: 2, name: 'A2' }, { id: 3, name: 'A3' }];
+employees.forEach(emp => console.log(emp));
+
+///json
+const str=JSON.stringify(employees)
+console.log(str)
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+Modularity:
+..........
+
+In java Modularity , is presented via "Packages"
+
+Package organize the code  logically.
+
+Customer.java
+
+package com.ibm.cms
+
+public class Customer{}
+
+Java organizes code folders and files Physically.
+
+d:/javaapps/src/
+    com/ibm/cms/Customer.java
+
+
+What about javascript Modularity?
+
+ Javascript is file based modularity physically
+ but logically there is no such modularity at language level.
+
+ collection of variable declarations and function.
+
+Once js started growing in large scale, dev struck to organize code.
+
+2000, Smart developers started thinking about how to modualrize js code.
+ Module design patterns came.
+
+
+1.Namespace design pattern : 2000 : jquery
+2.AMD -Async Module Defintion : dojo
+3.CJS - Common JS
+4.ES 6 Module design pattern  = amd + cjs
+5.System = AMD = CJS + ES 6
+6.UMD = NAMESPACE + AMD + CJS = ES 6
+
+
+ I can organize the code , based on these patterns, but what about runtimes?
+  js runtime never suppport these patterns directly then each design pattern is lib.
+
+ Loaders : it is simple js lib to help link and load js files.
+
+
+3.CJS - Common JS
+4.ES 6 Module design pattern  = amd + cjs
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+lets start cjs first;
+......................
+
+cjs is built in node js.
+node supports cjs in built. no separate loader or linker is required
+but if you run cjs code on browsers , we need loaders.
+
+
+COmmon js:
+
+1.How to share code
+  exports
+  module.exports
+
+2.How to link files
+  require()
+ 
+code : 
+
+ variable declaration
+ function declaration
+ class declaration
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
