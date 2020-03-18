@@ -4025,7 +4025,1424 @@ fetch();
     }
     module.exports = new ToDoService();
 
+////////////////////////////////////////////////////////////////////////////////////////////
 
+Node js : io : fs io , web programming
+.....................................
+
+Node was created to do nonblocking io.
+
+Types of modules:
+ 
+1.node in built modules
+
+2.custom modules
+3.third party modules
+
+
+1.node in built modules
+
+
+1.os module
+2.events module
+3.file system module
+4.path
+5.http module
+
+
+2.os module provides 
+The os module provides operating system-related utility methods and properties.
+
+//os module
+const os  = require('os');
+
+console.log('Total CPUs')
+console.log(os.cpus());
+console.log('Arch ',os.arch())
+
+
+./ vs ''
+.........
+
+ require('./services/TODOService');
+  ->here you can see ./
+  ./ -current dir
+ require('os'); => 
+  -here no ./ 
+
+
+Why?
+
+Note : if you are java devp, you know the classpath , how it works?
+
+
+require('os');
+
+Node internally uses a search algorthim,node always looks the folder called
+ "node_modules" in the current project, if not , then it searches, the node in built 
+installtion folder---c:/pf/node/node_nodules--if it finds it will pick up from there else it will throw error.
+
+require('./services/TODOService');
+   it will lookup in the current dir or sub dirs only.
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+Event Emitter Modules:
+
+
+ It is used to build driven programming.
+ In node js most io applications are event driven.
+
+All event driven architectures are based on pub-sub pattern
+
+1.publisher
+2.subscriber
+
+
+const EventEmitter = require('events');
+
+
+//domain object is powered with event emitter pattern
+class ProductService extends EventEmitter{
+     constructor(){
+         super();
+         this.on('sold',(product)=>{
+             console.log(`Product has been sold`);
+         });
+     }
+     //biz api
+     sale(product){
+         this.emit('sold',product);
+     }
+}
+
+module.exports = ProductService;
+
+const EventEmitter = require('events');
+const ProductService = require('./services/ProductService');
+
+//create Object for event emitter
+const eventEmitter = new EventEmitter();
+
+//subscriber
+eventEmitter.on('hello', function (data) {
+    console.log(`${data}`);
+});
+
+//publisher
+eventEmitter.emit('hello', 'Hello How are you!');
+eventEmitter.emit('hello', 'Wow!..');
+
+//sale 
+let pService = new ProductService();
+pService.sale({ id: 1, name: 'Phone' });
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+How to write async or non blocking programming?
+
+
+Requirements to write async code?
+
+1.You must have low level async api and eq high level async api
+2.handler function / callback function : function as param.
+
+api for async code: in node
+
+1.timers
+2.non blocking io apis
+  -fs,http,ftp.....
+
+1.fs io
+2.network io
+  -http : web apps
+
+
+File System : fs
+
+ To read , Write disk files
+
+const fs = require('fs');
+
+//fs.readFile(path[, options], callback)
+
+const path = "./src/assets/info.txt";
+const options = {
+    encoding: 'utf-8'
+};
+console.log('start')
+fs.readFile(path, options, function (err, data) {
+    if (err) throw err;
+    console.log(data);
+});
+console.log('end');
+////////////////////////////////////////////////////////////////////////////////////
+
+The above code uses full file path , i dont want to use full file path?
+
+Global Objects in node:
+
+1.process
+2.JS objects-math,date....
+3.exports
+4.module
+
+Global Variables:
+
+5.__dirname
+      ->Get current dir path
+6.Global Objects in node:
+
+1.process
+2.JS objects-math,date....
+3.exports
+4.module
+5.__dirname
+      ->Get current dir path
+6.__filename
+     ->Get current dir + path__filename
+     ->Get current dir + path
+
+
+Use Case:
+  current dir + fileName
+	dir/src + fileName
+
+
+How to get full file path through code?
+
+Path Module:
+-----------
+The path module provides utilities for working with file and directory paths.
+
+
+const fs = require('fs');
+const path = require('path');
+
+//const path = "./src/assets/info.txt";
+const filePath = path.join(__dirname, "assets/info.txt");
+const options = {
+    encoding: 'utf-8'
+};
+console.log('start')
+fs.readFile(filePath, options, function (err, data) {
+    if (err) throw err;
+    console.log(data);
+});
+console.log('end');
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//write file
+const fs = require('fs');
+const path = require('path');
+
+//fs.writeFile(file, data[, options], callback)
+const filePath = path.join(__dirname, "assets/info_copy.txt");
+const options = {
+    encoding: 'utf-8'
+};
+const data = "Hello I am node file !!!!!!";;
+fs.writeFile(filePath, data, options, function (err) {
+    if (err) throw err;
+    console.log(filePath, 'has been written')
+});
+//////////////////////////////////////////////////////////////////////////////////
+
+Does node supports blocking io? , node itself handles io operation instead of os?
+
+ Yes! but dont over use, which blocks current stack.
+
+
+How nodes supports blocking io?
+
+  Thread pools
+
+const fs = require('fs');
+const path = require('path');
+
+//const path = "./src/assets/info.txt";
+const filePath = path.join(__dirname, "assets/info.txt");
+const options = {
+    encoding: 'utf-8'
+};
+//sync read file
+//fs.readFileSync(path[, options])
+console.log('start')
+const data = fs.readFileSync(filePath, options);
+console.log(data);
+console.log('end');
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+IO operations can be done sync or async way.
+
+Async io operations can be done two ways.
+
+1.Non-Streaming
+2.Streaming  : Evented IO : Event driven IO.
+
+
+Non Streaming IO : read / write
+
+The operating system completes the whole file read operation, sends to node process memory  , and finally will be delivered to user
+
+in concurrent env , if you read and load more files on node process,node process will crash.
+
+What is the solution:
+
+1.Streaming :
+
+node breaks content into smaller unit called "chunk"
+node streams /send data in order chunk by chunk.
+
+
+Non streaming apis : dont use for big file reading in network env
+fs.readFile,fs.writeFile
+
+Types of Streams:
+
+1.Readaable Stream : input
+2.Writeable stream : output
+3.Duplex stream : read + output
+
+
+Built in readable Streams:
+
+HTTP responses, on the client
+HTTP requests, on the server
+fs read streams
+zlib streams
+crypto streams
+TCP sockets
+child process stdout and stderr
+process.stdin
+
+Writable Streams:
+HTTP requests, on the client
+HTTP responses, on the server
+fs write streams
+zlib streams
+crypto streams
+TCP sockets
+child process stdin
+process.stdout, process.stderr
+
+
+All streaming apis are powered with events
+node io streams has built in events.
+events are emitted by os
+Our programs are listeners.
+
+common events in all io
+
+data event:
+ which is emitted by node, for each chunk.
+
+close event:
+The 'close' event is emitted when the stream and any of its underlying resources (a file descriptor, for example) have been closed.
+
+end event:
+The 'end' event is emitted when there is no more data to be consumed from the stream.
+
+Event: 'error'
+ The 'error' event may be emitted by a Readable implementation at any time
+Typically, this may occur if the underlying stream is unable to generate data due to an underlying internal failure, or when a stream implementation attempts to push an invalid chunk of data.
+
+How to read file using streaming mode?
+
+
+const fs = require('fs');
+const path = require('path');
+
+//const path = "./src/assets/info.txt";
+const filePath = path.join(__dirname, "assets/big.file");
+const options = {
+    encoding: 'utf-8'
+};
+
+//create read stream
+
+const inputStream = fs.createReadStream(filePath,options);
+
+//add events for listensing
+let data = '';
+inputStream.on('data', function (chunk) {
+      console.log(`Received ${chunk.length} bytes of data.`);
+      data += chunk;
+
+});
+
+//end event
+inputStream.on('end', function () {
+      console.log('There will be no more data to read!');
+      //console.log(data);
+})
+
+//error event: for error handling
+inputStream.on('error', function (err) {
+      console.log(`Some thing went wrong! ${err}`)
+});
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+Write Stream:
+.............
+
+const fs = require('fs');
+const path = require('path');
+
+const fileName = path.join(__dirname, 'assets/grains.txt');
+const config = {
+    encoding: 'utf8',
+    flag: 'w'
+};
+//data
+const grains = ['wheat', 'rice', 'oats'];
+
+const outputStream = fs.createWriteStream(fileName, config);
+
+while (grains.length) {
+    let data = grains.pop() + " ";
+    outputStream.write(data);
+    console.log("Wrote: %s", data);
+}
+//call close method : will trigger close 
+outputStream.close();
+
+outputStream.on('close', function () {
+    console.log('file stream has been closed!!')
+})
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+file Move operations : read + write together:
+.............................................
+
+//read + write 
+const fs = require('fs');
+const path = require('path');
+
+const fileName = path.join(__dirname, 'assets/info.txt');
+
+const config = {
+    encoding: 'UTF-8'
+}
+
+const outputFileName = path.join(__dirname, 'assets/greeter.txt');
+
+
+const inputStream = fs.createReadStream(fileName, config);
+
+const outputStream = fs.createWriteStream(outputFileName, config);
+
+//Register data event.
+inputStream.on('data', function (chunk) {
+    console.log(`Received ${chunk.length} bytes of data.`);
+    console.log(chunk);
+    outputStream.write(chunk);
+});
+
+
+//end event
+inputStream.on('end', function () {
+    console.log('There will be no more data to read!');
+    outputStream.close();
+})
+
+//error event: for error handling
+inputStream.on('error', function (err) {
+    console.log(`Some thing went wrong! ${err}`)
+});
+
+outputStream.on('close', function () {
+    console.log(`File write operation is completed`);
+});
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+Back Pressure:
+..............
+
+If you want to read data from one file and write into anthoer file.
+If you want to read data from network sockets and write into anthoer file /another socket.
+
+Read + Write => togther
+Eg:
+ copy and paste
+ file moving 
+ file copies
+
+Problems when you do read and write together
+
+1. In general read operation is faster than write operation
+
+Back Pressure means inputstream is fast, outputstream slow, then data will be lost.
+
+
+Handling back pressure:
+.......................
+Pause Input stream if the Node Process memory is full(Buffer),resume if buffer/process memory is empty.
+
+stream.pause() if stream is full
+else
+stream.resume() if stream is drain
+
+//back pressure
+const fs = require('fs');
+const path = require('path');
+
+const inputfileName = path.join(__dirname, 'assets/big.file');
+const outputfileName = path.join(__dirname, 'assets/big_copy.file');
+
+const config = {
+      encoding: 'UTF-8'
+}
+
+//Back pressure handling
+const readerStream = fs.createReadStream(inputfileName, config);
+const writeStr = fs.createWriteStream(outputfileName, config);
+
+readerStream.on('data', function (chunk) {
+      console.log(`Received ${chunk.length} bytes of data.`);
+      let buffer_good = writeStr.write(chunk);
+      if (!buffer_good) readerStream.pause();
+});
+writeStr.on('drain', function () {
+      console.log('buffer drained!');
+      readerStream.resume();
+});
+
+readerStream.on('end', function () {
+      //console.log(data);
+});
+
+readerStream.on('error', function (err) {
+      console.log(err.stack);
+});
+////////////////////////////////////////////////////////////////////////////////////
+
+How to handle back pressure using very simple api 
+
+ inputstream.pipe(outstream); // will transfer files with back 
+
+
+
+const fs = require('fs');
+const path = require('path');
+
+const inputfileName = path.join(__dirname, 'assets/big.file');
+const outputfileName = path.join(__dirname, 'assets/big_copy.file');
+
+const config = {
+      encoding: 'UTF-8'
+}
+
+//Back pressure handling
+const readerStream = fs.createReadStream(inputfileName, config);
+const writeStr = fs.createWriteStream(outputfileName, config);
+
+//backPressure streams
+//pipe method is simplest method which wraps resume,pasuse,drain 
+readerStream.pipe(writeStr);
+
+
+Quiz:
+
+Create FileService class 
+
+have read method
+ inside read method implement file operations, wrap inside promise return promise
+
+in main program use async await keywor to read file content.
+
+/////////////////////////////////////////////////////////////////////////////////////////
+
+Web Programming : how to create webserver and web application using node http io module
+///////////////////////////////////////////////////////////////////////////////////////
+
+Web Apps in Node:
+................
+
+Tradtional web work flow
+
+Client-----request----------------WebServer--- thread--will io operation.
+Client-----request----------------WebServer----thread--will io operation.
+Client-----request----------------WebServer---thread-- will io operation.
+Client-----request----------------WebServer---thread-- will io operation.
+
+
+
+Non Blocking web model(Node.js):
+...............................
+
+Client-----request------WebServer built by node---|-            will io operation.
+Client-----request------WebServer built by node---|- libvu --os will io operation.
+Client-----request----- WebServer built by node---|-            will io operation.
+Client-----request----- WebServer built by node---|-            will io opeeration
+
+
+node and http 
+node provides http high level api from 'http.js' through module.
+
+
+//create web server
+//create web app
+
+//start the webserver
+
+
+class:http:ServerResponse : output
+class:http:ClientRequest : input
+class:http:Server : handling low socket operations
+
+
+const http = require('http');
+
+const port = 3001;
+
+//create server
+const server = http.createServer(function (req, res) {
+    res.write('<h1>Welcome to node application</h1>')
+    res.end();
+});
+
+//deploy app and start server
+
+server.listen(port, function () {
+    console.log('Server startup done!')
+});
+
+
+////////////////////////////////////////////////////////////////////////////////////
+
+How to attach events on server?
+
+
+//how to add events 
+
+const http = require('http');
+
+const port = 3001;
+
+//create server
+const server = http.createServer(function (req, res) {
+    res.write('<h1>Welcome to node application</h1>')
+    res.end();
+});
+
+//deploy app and start server
+
+server.listen(port, function () {
+    console.log('Server startup done!')
+});
+
+//add events for servers
+server.on('request', function (request, response) {
+    console.log(`Request received ${new Date()}`)
+});
+/////////////////////////////////////////////////////////////////////////////////////////////
+How to handle incomings / how to data from the client?
+
+
+const http = require('http');
+
+const port = 3001;
+
+//create server
+const server = http.createServer(function (req, res) {
+
+    //data from client
+    req.on('data', function (chunk) {
+        console.log(chunk.toString());
+    });
+    req.on('end', function () {
+        res.write('<h1>Welcome to node application</h1>')
+        res.end();
+    });
+
+});
+
+//deploy app and start server
+
+server.listen(port, function () {
+    console.log('Server startup done!')
+});
+
+//add events for servers
+server.on('request', function (request, response) {
+    console.log(`Request received ${new Date()}`)
+});
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+How to build REST End points?
+
+HTTP Verbs : GET,POST,PUT,DELETE...
+RESOURCE URLS : /api/users  /api/products /api/products/1
+
+
+GET /api/users ==> USERS AS JSON
+
+CAN YOU USE HTTP Module to build realtime rest points?
+
+  Yes! but it is diffcult to build , why because , we dont have proper design patterns
+or no boiler plate code.
+
+
+Then we need to use frameworks.
+ -Express js.
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+NPM:
+
+node modules types
+1.custom module - discussed
+2.in built modules - disucssed
+3.third party modules - 
+
+npm:   
+ node package manager === mvn
+npm is tool is used to distribute node modules to others
+and you can get node modules from  others.
+
+npm tool is distributed along with node installation
+
+npm uses public repository server called npmjs.com npmjs.org
+
+tools and libs,frameworks all are distributed as node modules into repository.
+
+
+Javascript Project Structure:(server side/ client side)
+.........................................................
+
+The project must have two things
+
+1.package.json file :
+   meta file which describes the project information
+2.node_modules folder
+   which contains libs/frameworks/tools code.
+
+
+create package.json file
+
+>npm init
+
+
+{
+  "name": "mynode-apps",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Subramanian Murugan",
+  "license": "ISC"
+}
+
+
+npm is used
+
+to install,uninstall,publish node modules from node repo / into node repo.
+
+if you install third party modules , into your project, node distributes npm tool ,using this you can install,uninstall,upgrade node modules.
+
+
+npm syntax:
+
+npm commandName.
+
+where <command> is one of:
+    access, adduser, audit, bin, bugs, c, cache, ci, cit,
+    clean-install, clean-install-test, completion, config,
+    create, ddp, dedupe, deprecate, dist-tag, docs, doctor,
+    edit, explore, fund, get, help, help-search, hook, i, init,
+    install, install-ci-test, install-test, it, link, list, ln,
+    login, logout, ls, org, outdated, owner, pack, ping, prefix,
+    profile, prune, publish, rb, rebuild, repo, restart, root,
+    run, run-script, s, se, search, set, shrinkwrap, star,
+    stars, start, stop, t, team, test, token, tst, un,
+    uninstall, unpublish, unstar, up, update, v, version, view,
+    whoami
+
+node_modules : folder which can hold all javascript modules downloaded from repo.
+
+installing module:
+
+>npm install  moduleName  --options
+>npm i moduleName --options
+
+options:
+ --save
+ --save-dev
+ -g
+
+Development
+
+Production
+
+if you are installing any node module, you can tell, do you want to use only for development
+or development + production.
+
+Unit testing libs : Junit.jar===>
+
+ --save = >    development + production
+ --save-dev => only for development
+
+
+Eg:
+...
+
+$npm i express --save
+
+$npm uninstall express --save
+////////////////////////////////////////////////////////////////////////////////////////////
+
+How to use Express to build rest end points?
+
+
+Express core concepts:
+
+1.Express Application : collection of many objects
+2.Express Modules
+3.Express middlewares
+4.Express with third party libs.
+
+
+Application:
+The app object conventionally denotes the Express application. 
+
+Create it by calling the top-level express() function exported by the Express module
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+Simple REST End point:
+
+const express = require('express'); // returns function
+
+const port = 3001;
+
+//Create application Object
+const app = express();
+
+//CREATE REST ENDPOINTS
+
+//http verb mapping
+app.get('/api/books/list', function (req, res) {
+    res.end('<h1>Books Api : GET request</h1>')
+});
+app.post('/api/books', function (req, res) {
+    res.end('<h1>Books Api : POST request</h1>')
+});
+app.put('/api/books/1', function (req, res) {
+    res.end('<h1>Books Api : PUT request</h1>')
+});
+app.delete('/api/books/1', function (req, res) {
+    res.end('<h1>Books Api : DELETE request</h1>')
+});
+//server startup
+
+app.listen(port, function () {
+    console.log('Express server is up!')
+});
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+How to build modular domain driven REST end points
+
+src
+  routes
+     booksroutes.js
+     usersroutes.js
+
+ app.js/index.js
+   server code
+
+                                                             |---books
+ClientRequest-----------------|Webserver(app.js)----Routers--|---users
+                                                             |---comments
+
+Application
+
+Router Object
+  --en
+
+src/routes/userrouter.js
+const express = require('express');
+
+//create Router
+
+const router = express.Router();
+
+//users
+router.get('/list', function (req, res) {
+    res.end('<h1>USERS Api : GET request</h1>')
+});
+router.post('/', function (req, res) {
+    res.end('<h1>USERS Api : POST request</h1>')
+});
+router.put('/1', function (req, res) {
+    res.end('<h1>USERS Api : PUT request</h1>')
+});
+router.delete('/', function (req, res) {
+    res.end('<h1>USERS Api : DELETE request</h1>')
+});
+
+module.exports = router;
+
+
+/src/routes/bookrouter.js
+const express = require('express');
+
+//create Router
+
+const router = express.Router();
+
+router.get('/list', function (req, res) {
+    res.end('<h1>Books Api : GET request</h1>')
+});
+router.post('/', function (req, res) {
+    res.end('<h1>Books Api : POST request</h1>')
+});
+router.put('/1', function (req, res) {
+    res.end('<h1>Books Api : PUT request</h1>')
+});
+router.delete('/1', function (req, res) {
+    res.end('<h1>Books Api : DELETE request</h1>')
+});
+
+module.exports = router;
+
+
+
+
+src/app.js
+
+const express = require('express'); // returns function
+const BooksRouter = require('./routes/booksroutes');
+const UserRouter = require('./routes/userrouter');
+
+const port = 3001;
+
+//Create application Object
+const app = express();
+
+//bind BooksRouterwith with main Application
+app.use("/api/books", BooksRouter);
+app.use("/api/users", UserRouter)
+
+//server startup
+app.listen(port, function () {
+    console.log('Express server With routing is up!')
+});
+//////////////////////////////////////////////////////////////////////////////////////////
+
+URLS: 
+/api/books
+/api/books/1
+
+/api/books/1 : Request Parameter
+/user/:id
+
+router.get('/:id', function (req, res) {
+    const id  = parseInt(req.params.id); //
+    res.end(`<h1>Books Api : GET request : ${id}</h1>`)
+});
+
+How to send json payload
+
+const express = require('express');
+const BOOKS = require('../mock-data/books-mock');
+
+//create Router
+
+const router = express.Router();
+
+router.get('/list', function (req, res) {
+    res.json(BOOKS);
+});
+
+// /api/books/1
+router.get('/:id', function (req, res) {
+    console.log(req.params);
+    const id = parseInt(req.params.id); //
+    res.end(`<h1>Books Api : GET request : ${id}</h1>`)
+});
+router.post('/', function (req, res) {
+    res.end('<h1>Books Api : POST request</h1>')
+});
+router.put('/1', function (req, res) {
+    res.end('<h1>Books Api : PUT request</h1>')
+});
+router.delete('/1', function (req, res) {
+    res.end('<h1>Books Api : DELETE request</h1>')
+});
+
+module.exports = router;
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+How to read data from Mongo db.
+
+if you want to connect with mongo or any database we need a driver
+
+node community provides lot of drivers
+
+monogojs
+
+
+const express = require('express');
+const BOOKS = require('../mock-data/books-mock');
+const mongojs = require('mongojs')
+
+
+//create Router
+
+const router = express.Router();
+
+//read from mock file
+// router.get('/list', function (req, res) {
+//     res.json(BOOKS);
+// });
+//read from mongo db
+
+//db connection code
+const db = mongojs('BooksDb')
+
+router.get('/list', function (req, res) {
+
+    //Query records from Mongo db
+    const books = db.collection('books');
+    books.find(function (err, docs) {
+        if (err) throw err;
+        res.json(docs);
+    })
+
+});
+
+// /api/books/1
+router.get('/:id', function (req, res) {
+    console.log(req.params);
+    const id = parseInt(req.params.id); //
+    res.end(`<h1>Books Api : GET request : ${id}</h1>`)
+});
+router.post('/', function (req, res) {
+    res.end('<h1>Books Api : POST request</h1>')
+});
+router.put('/1', function (req, res) {
+    res.end('<h1>Books Api : PUT request</h1>')
+});
+router.delete('/1', function (req, res) {
+    res.end('<h1>Books Api : DELETE request</h1>')
+});
+
+module.exports = router;
+/////////////////////////////////////////////////////////////////////////////////////////
+
+Middlewares:
+
+Express app architecture:
+
+express has two things
+1.URL mapping and request processing : app.get('url')
+2.Routers , to create moduels
+
+middlewares:
+...........
+
+what is middleware?
+
+ it is utility can be plugged in express application.
+
+Express provides only
+1.request and response processing.
+2.Routers :in to modules.
+
+Middlewares plugins , which enchance express apps.
+
+req.body : if you want to read data from client
+
+y cant directly, express provides a concept called middlewares.
+
+Rest of application features
+
+1.loggers
+2.security
+3.database connectivity
+3.data formating
+4.view engine integration
+
+
+Types of middlewares
+1.custom middlewares
+2.third party middlewares
+
+middleware workflows:
+
+client----request---node--server---express application---
+
+			   | ---m1
+			   | --m2
+	express application| ---m3   ----Request Processing(get,post...)
+			   |---m4
+			   | --mn
+
+
+ Note : middleware code is executed before request-response handling
+
+ middlewares are eq "filters" in java
+
+How to attach middleware with application object /Router level?
+
+app.use(middleware) : middleware registeration at app level : global middlewares
+router.use(middleware) : middleware registeration at module level
+
+
+Types of middlewares based on Use:
+.................................
+Application-level middleware
+  middleware attached at application : global middlewares
+Router-level middleware
+ middleware attached at router level(module) : module specific
+Error-handling middleware
+ for handling global errors
+Built-in middleware
+ provided by express itself
+Third-party middleware
+ provided by others.
+
+Built-in middleware
+ provided by express itself
+
+1.body-parser :
+  which parses client input data into javascript object
+
+npm install body-parser
+
+const express = require('express'); // returns function
+const BooksRouter = require('./routes/booksroutes');
+const UserRouter = require('./routes/userrouter');
+const bodyParser = require('body-parser');
+
+
+const port = 3001;
+
+//Create application Object
+const app = express();
+
+//Attach body parser middleware
+app.use(bodyParser.json());
+
+//bind BooksRouterwith with main Application
+app.use("/api/books", BooksRouter);
+app.use("/api/users", UserRouter)
+
+//server startup
+app.listen(port, function () {
+    console.log('Express server With routing is up!')
+});
+
+const express = require('express');
+const BOOKS = require('../mock-data/books-mock');
+const mongojs = require('mongojs')
+
+
+//create Router
+
+const router = express.Router();
+
+//read from mock file
+// router.get('/list', function (req, res) {
+//     res.json(BOOKS);
+// });
+//read from mongo db
+
+//db connection code
+const db = mongojs('BooksDb')
+
+router.get('/list', function (req, res) {
+
+    //Query records from Mongo db
+    const books = db.collection('books');
+    books.find(function (err, docs) {
+        if (err) throw err;
+        res.json(docs);
+    })
+
+});
+
+// /api/books/1
+router.get('/:id', function (req, res) {
+    console.log(req.params);
+    const id = parseInt(req.params.id); //
+    res.end(`<h1>Books Api : GET request : ${id}</h1>`)
+});
+router.post('/', function (req, res) {
+    const data = req.body;
+    console.log(data)
+    res.json(data);
+});
+router.put('/1', function (req, res) {
+    res.end('<h1>Books Api : PUT request</h1>')
+});
+router.delete('/1', function (req, res) {
+    res.end('<h1>Books Api : DELETE request</h1>')
+});
+
+module.exports = router;
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+const express = require('express');
+const BOOKS = require('../mock-data/books-mock');
+const mongojs = require('mongojs')
+
+
+//create Router
+
+const router = express.Router();
+
+//read from mock file
+// router.get('/list', function (req, res) {
+//     res.json(BOOKS);
+// });
+//read from mongo db
+
+//db connection code
+const db = mongojs('BooksDb')
+
+router.get('/list', function (req, res) {
+
+    //Query records from Mongo db
+    const books = db.collection('books');
+    books.find(function (err, docs) {
+        if (err) throw err;
+        res.json(docs);
+    })
+
+});
+
+// /api/books/1
+router.get('/:id', function (req, res) {
+    console.log(req.params);
+    const id = parseInt(req.params.id); //
+    res.end(`<h1>Books Api : GET request : ${id}</h1>`)
+});
+router.post('/', function (req, res) {
+    const data = req.body;
+    console.log(data)
+    const books = db.collection('books');
+    boooks.insert(data, function (err) {
+        res.json({ message: 'The record has been inserted' });
+    })
+
+});
+router.put('/1', function (req, res) {
+    res.end('<h1>Books Api : PUT request</h1>')
+});
+router.delete('/1', function (req, res) {
+    res.end('<h1>Books Api : DELETE request</h1>')
+});
+
+module.exports = router;
+
+Steps:
+
+1.install mongo community edition
+https://docs.mongodb.com/manual/tutorial/install-mongodb-enterprise-on-windows/
+
+2.download some mock data
+https://github.com/ozlerhakan/mongodb-json-files
+
+3.create db ,collection
+
+4.download samples data like books db.
+
+//////////////////////////////////////********************/////////////////////////////////
+
+MicroServices on Node JS:
+.........................
+
+What is Micro service?
+
+ Micro service is one of software enginerring principle
+ to build distributed application.
+
+ Microservice is one of software architecture pattern
+ to build distribtued applications
+
+Distributed Applications:
+
+The components(parts) of the application is distributed across different machines. 
+They communicate each other to exchange data.
+
+Distributed application dev patterns:
+....................................
+
+1.Monolithic architecture
+2.Microservice architecture
+
+
+
+
+1.Monolithic architecture
+
+The application is developed and deployed as single Java WAR/EAR/JAR file.
+a single directory hierarchy of Rails or NodeJS code
+
+Single dev,testing,deployment.
+
+Draw backs:
+
+1.what if i want to deliver project to end clients module by module at period intervals
+
+2.Vendor lock in
+   if you select one technolgy like java /mysql, the whole application must be in java only.
+   polyglot not possible.
+3.Scalablity 
+   If you want dev/enchance your application based on modern biz needs, it is difficult
+etc...
+
+Micro service :
+
+ Break the whole application into a separate application
+
+Each application can be develped,tested, deployed separatly 
+  Domain driven design : Build application based on domain only not for technology 
+  SOLID 
+//////////////////////////////////////////////////////////////////////////////////////////
+
+Micro Service :
+
+  As a developer , you have to concentrate lot of things.
+
+1. coding
+2. infra structure 
+    ->How to manage source code repo :git /svn /bit bucket
+    ->How to work with CI/CD 
+    ->Deployments
+         Dockers,KB....
+    ->Communication infra
+        ->RPI
+        ->Messaging : MOM
+	->domain specific : TCP/IP ,HTTP,SMTP
+   ->Software Registry
+       ->Service registry
+       ->Service discovery
+   ->API Gateways
+
+   ->Reliability
+	->Fallabck
+        -circuiteBreaker
+Observability /Management
+	->Log aggregation	
+	Application metrics
+	Audit logging
+	Distributed tracing
+	Exception tracking
+	Health check API
+	Log deployments and changes
+
+  Security
+       token
+  Centeralized configuration
+
+  DataBase,Transaction
+.................................................................................................
+
+Microservice implementations stack:
+
+Today most of the languges provide ms architecture implemenation.
+
+Java frameworks:
+
+1.Microservices with Spring : Spring Cloud Project
+2.Eclipse Vert.x
+3.Eclipse MicroProfile
+etc....
+
+Javascript frameworks: node based framework
+
+1.Moleculer
+2.Seneca
+3.nonoservices
+//////////////////////////////////////////////////////////////////////////////////////////
+                                          Moleculer js
+				(Progressive Microservice Framework)
+
+What is Moleculer?
+
+Moleculer is a fast, modern and powerful microservices framework for Node.js.
+
+It helps you to build efficient, reliable & scalable services.
+
+Moleculer provides many features for building and managing your microservices.
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+How to start ?
+
+Create Project:
+
+C:\ibm\ibm-node-ms>mkdir microservice-apps
+
+C:\ibm\ibm-node-ms>cd microservice-apps
+
+C:\ibm\ibm-node-ms\microservice-apps>npm init
+
+C:\ibm\ibm-node-ms\microservice-apps>mkdir services
+
+C:\ibm\ibm-node-ms\microservice-apps> code .
+
+$npm i moleculer --save
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+Core concepts in Molecular:
+..........................
+
+Service
+ A service is a simple JavaScript module containing some part of a complex application. 
+ A service represents a biz logic in your application.
+
+
+Service Broker : == Spring Container
+ Service Broker is the heart of Moleculer.
+
+ It is responsible for management and communication between services (local and remote). 
+ Each node must have an instance of Service Broker.
+
+  "Service Broker is one single Node instance - Node runtime"
+
+
+
+
+		
+		         Service1 -- Service 2 Service N
+                                     |
+                    		 --------------
+				 Service Broker
+				     |
+                                  Node Runtime
+
+
+
+Use case : how to create Service broker and start
+
+services/HelloWorldService.js
+const { ServiceBroker } = require('moleculer');
+
+
+//Create Service Broker Object
+const broker = new ServiceBroker();
+
+
+//start Service Broker
+
+broker.start();
 
 
 
